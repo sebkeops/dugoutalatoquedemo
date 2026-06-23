@@ -20,5 +20,12 @@
   h3,
   h4 {
     @apply font-heading text-primary-dark;
+    /* Sécurité mobile : un long mot insécable (placeholders, URLs) se coupe
+       au lieu de déborder à ~375px. */
+    overflow-wrap: break-word;
+  }
+
+  p {
+    overflow-wrap: break-word;
   }
 }

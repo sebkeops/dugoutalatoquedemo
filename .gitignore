@@ -7,6 +7,10 @@ node_modules
 dist
 dist-ssr
 *.local
+*.tsbuildinfo
+
+# Outils / agent
+.claude/
 
 # Variables d'environnement
 .env

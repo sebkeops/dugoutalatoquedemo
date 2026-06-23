@@ -23,4 +23,14 @@ export const palette = {
   ink: '#3A2C23',
   // Texte sur boutons bruns.
   onPrimary: '#F4EDE7',
+
+  // --- Accent terracotta (couche événementielle / traiteur) ---
+  // Rappel des affiches menus du client. Le brun domine la structure ;
+  // le terracotta ponctue (événements à emporter, mises en avant traiteur).
+  // Accent clair — fonds d'accent, étiquettes, traits, sur texte foncé.
+  accent: '#D39F8D',
+  // Accent soutenu — à utiliser dès qu'il porte du texte blanc (contraste).
+  accentStrong: '#BE7D64',
+  // Texte sur accent soutenu.
+  onAccent: '#FFFFFF',
 }

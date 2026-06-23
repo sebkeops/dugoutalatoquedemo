@@ -31,3 +31,26 @@ export const TIERS: Record<Tier, TierInfo> = {
 export function isUnlocked(minTier: Tier, current: Tier): boolean {
   return current >= minTier
 }
+
+/**
+ * Une fonctionnalité / section de l'app, rattachée à la formule minimale
+ * qui la débloque. Sert de base aux données (src/data) et aux garde-fous UI.
+ */
+export interface Feature {
+  id: string
+  label: string
+  minTier: Tier
+  description?: string
+}
+
+/** Libellé d'inclusion pour un `minTier`, ex. "Dès la formule Intermédiaire". */
+export function tierInclusionLabel(minTier: Tier): string {
+  return minTier === 1
+    ? 'Inclus dans toutes les formules'
+    : `Dès la formule ${TIERS[minTier].name}`
+}
+
+/** Libellé d'indisponibilité, ex. "Disponible en formule Complète". */
+export function tierLockedLabel(minTier: Tier): string {
+  return `Disponible en formule ${TIERS[minTier].name}`
+}
