@@ -12,6 +12,10 @@ dist-ssr
 # Outils / agent
 .claude/
 
+# Artefacts temporaires de vérification (captures, planches-contact)
+.shots/
+.curate/
+
 # Variables d'environnement
 .env
 .env.*

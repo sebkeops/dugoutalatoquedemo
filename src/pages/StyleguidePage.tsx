@@ -67,6 +67,21 @@ export function StyleguidePage() {
           <Swatch name="surface" value={colors.surface} />
           <Swatch name="ink" value={colors.ink} />
         </div>
+
+        <div className="grid gap-3 sm:grid-cols-3">
+          <div className="rounded-card bg-cream p-4 ring-1 ring-secondary/30">
+            <p className="text-ink">Texte courant sur fond crème</p>
+            <p className="mt-1 text-xs text-secondary">ink #3A2C23 / cream — contraste excellent</p>
+          </div>
+          <div className="rounded-card bg-primary p-4">
+            <p className="text-on-primary">Texte crème sur bouton brun</p>
+            <p className="mt-1 text-xs text-on-primary/70">on-primary / primary #7C5840</p>
+          </div>
+          <div className="rounded-card bg-accent-strong p-4">
+            <p className="text-on-accent">Texte blanc sur terracotta</p>
+            <p className="mt-1 text-xs text-on-accent/80">on-accent / accent-strong #BE7D64</p>
+          </div>
+        </div>
       </Section>
 
       <Section title="Typographie">

@@ -23,6 +23,26 @@ const SIZES: Record<Size, string> = {
   lg: 'px-7 py-3 text-lg',
 }
 
+/**
+ * Classes de bouton de marque, réutilisables pour styler un autre élément
+ * (ex. un <Link> de react-router) en bouton sans dupliquer le style.
+ */
+export function buttonClasses(
+  variant: Variant = 'primary',
+  size: Size = 'md',
+  className = '',
+): string {
+  return [
+    'inline-flex items-center justify-center gap-2 rounded-button font-semibold',
+    'transition-colors focus-visible:outline-none focus-visible:ring-2',
+    'focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-cream',
+    'disabled:cursor-not-allowed disabled:opacity-50',
+    VARIANTS[variant],
+    SIZES[size],
+    className,
+  ].join(' ')
+}
+
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant
   size?: Size
@@ -38,18 +58,7 @@ export function Button({
   ...props
 }: ButtonProps) {
   return (
-    <button
-      className={[
-        'inline-flex items-center justify-center gap-2 rounded-button font-semibold',
-        'transition-colors focus-visible:outline-none focus-visible:ring-2',
-        'focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-cream',
-        'disabled:cursor-not-allowed disabled:opacity-50',
-        VARIANTS[variant],
-        SIZES[size],
-        className,
-      ].join(' ')}
-      {...props}
-    >
+    <button className={buttonClasses(variant, size, className)} {...props}>
       {children}
     </button>
   )
