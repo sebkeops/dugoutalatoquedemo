@@ -10,6 +10,9 @@ const fieldClasses = [
  * Champ de formulaire accessible (label lié, focus visible).
  * Rend un <input> par défaut, ou un <textarea> si `multiline`.
  * `hint` affiche une aide sous le champ.
+ *
+ * Champ contrôlé : passer `value` + `onChange(valeur)` (signature simplifiée,
+ * adaptée à un état local React — pas de soumission native).
  */
 export function FormField({
   label,
@@ -18,7 +21,9 @@ export function FormField({
   hint,
   required = false,
   placeholder,
-  ...rest
+  name,
+  value,
+  onChange,
 }: {
   label: string
   type?: string
@@ -26,9 +31,22 @@ export function FormField({
   hint?: ReactNode
   required?: boolean
   placeholder?: string
+  name?: string
+  value?: string
+  onChange?: (value: string) => void
 }) {
   const id = useId()
   const hintId = hint ? `${id}-hint` : undefined
+  const common = {
+    id,
+    name,
+    'aria-describedby': hintId,
+    required,
+    placeholder,
+    value,
+    className: fieldClasses,
+    onChange: (e: { target: { value: string } }) => onChange?.(e.target.value),
+  }
 
   return (
     <div className="space-y-1.5">
@@ -38,25 +56,9 @@ export function FormField({
       </label>
 
       {multiline ? (
-        <textarea
-          id={id}
-          aria-describedby={hintId}
-          required={required}
-          placeholder={placeholder}
-          rows={4}
-          className={fieldClasses}
-          {...rest}
-        />
+        <textarea {...common} rows={4} />
       ) : (
-        <input
-          id={id}
-          type={type}
-          aria-describedby={hintId}
-          required={required}
-          placeholder={placeholder}
-          className={fieldClasses}
-          {...rest}
-        />
+        <input {...common} type={type} />
       )}
 
       {hint && (

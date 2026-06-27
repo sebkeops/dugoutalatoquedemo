@@ -1,6 +1,13 @@
 import { Link } from 'react-router-dom'
-import { buttonClasses, Card, Container, Hero, Photo } from '../components'
-import { EVENEMENTS, REVIEWS, SITE, UNIVERS } from '../data'
+import {
+  buttonClasses,
+  Card,
+  Container,
+  Hero,
+  MailingSignup,
+  Photo,
+} from '../components'
+import { EVENEMENTS, REVIEWS, SITE, SOIREE_DU_MOIS, UNIVERS } from '../data'
 
 function Stars({ n }: { n: number }) {
   return (
@@ -16,41 +23,57 @@ export function HomePage() {
 
   return (
     <>
+      {/* Hero — deux entrées distinctes et équivalentes : Restaurant / Traiteur. */}
       <Hero
         eyebrow={`${SITE.baseline} · Léguevin`}
         title="La cuisine d’ici, faite maison"
         subtitle="Le restaurant à midi, le traiteur pour vos plus beaux événements."
         actions={
           <>
-            <Link to="/traiteur" className={buttonClasses('accent', 'lg')}>
-              Découvrir le traiteur
+            <Link to="/restaurant" className={buttonClasses('outline', 'lg', 'bg-cream/95')}>
+              Le restaurant
             </Link>
-            <Link to="/a-emporter" className={buttonClasses('outline', 'lg', 'bg-cream/95')}>
-              Nos événements à emporter
+            <Link to="/traiteur" className={buttonClasses('accent', 'lg')}>
+              Le traiteur
+            </Link>
+            <Link
+              to="/a-emporter"
+              className="basis-full text-sm font-medium text-on-primary/90 underline underline-offset-4 hover:text-on-primary"
+            >
+              Voir aussi : nos événements à emporter →
             </Link>
           </>
         }
       />
 
-      {/* Le restaurant — identité première. */}
+      {/* Le restaurant — identité première : teaser vers /restaurant. */}
       <Container className="space-y-4 py-8">
         <h2 className="text-2xl">Le restaurant</h2>
         <Card>
           <p className="text-sm text-ink/80">
-            PLACEHOLDER_RESTAURANT — quelques mots sur le restaurant et le menu du midi
-            (photos de salle et d’assiettes à fournir par le client).
+            À midi, une cuisine faite maison au rythme du marché, et des soirées à thème
+            tout au long de l’année.
           </p>
-          <dl className="mt-4 space-y-1 text-sm">
-            <dt className="font-semibold text-primary-dark">{SITE.restaurant.label}</dt>
-            <dd className="text-ink/80">{SITE.restaurant.hours}</dd>
-            <dd className="text-ink/80">{SITE.restaurant.closed}</dd>
-          </dl>
-          <a
-            href={SITE.phoneHref}
-            className={`${buttonClasses('outline', 'sm')} mt-4`}
-          >
-            Réserver une table · {SITE.phone}
-          </a>
+          <Link to="/restaurant" className={`${buttonClasses('primary', 'sm')} mt-4`}>
+            Découvrir le restaurant
+          </Link>
+        </Card>
+      </Container>
+
+      {/* Soirée à thème du mois. */}
+      <Container className="space-y-4 py-8">
+        <h2 className="text-2xl">Soirée à thème du mois</h2>
+        <Card accent>
+          <p className="text-xs font-semibold uppercase tracking-label text-accent-strong">
+            {SOIREE_DU_MOIS.date}
+          </p>
+          <h3 className="mt-1 font-heading text-xl text-primary-dark">
+            {SOIREE_DU_MOIS.theme}
+          </h3>
+          <p className="mt-1 text-sm text-ink/80">{SOIREE_DU_MOIS.description}</p>
+          <Link to="/restaurant" className={`${buttonClasses('accent', 'sm')} mt-4`}>
+            En savoir plus
+          </Link>
         </Card>
       </Container>
 
@@ -111,11 +134,40 @@ export function HomePage() {
         </div>
       </Container>
 
-      {/* Avis Google — note réelle, exemples reformulés. */}
+      {/* Coordonnées & horaires — adresse incluse. */}
       <Container className="space-y-4 py-8">
-        <div className="flex items-center gap-3">
-          <h2 className="text-2xl">Ils nous recommandent</h2>
-        </div>
+        <h2 className="text-2xl">Nous trouver</h2>
+        <Card>
+          <dl className="space-y-2 text-sm">
+            <div>
+              <dt className="font-semibold text-primary-dark">Adresse</dt>
+              <dd className="text-ink/80">{SITE.address}</dd>
+            </div>
+            <div>
+              <dt className="font-semibold text-primary-dark">Téléphone</dt>
+              <dd>
+                <a href={SITE.phoneHref} className="text-primary underline">
+                  {SITE.phone}
+                </a>
+              </dd>
+            </div>
+            <div>
+              <dt className="font-semibold text-primary-dark">{SITE.restaurant.label}</dt>
+              <dd className="text-ink/80">{SITE.restaurant.hours}</dd>
+              <dd className="text-ink/80">{SITE.restaurant.closed}</dd>
+            </div>
+          </dl>
+        </Card>
+      </Container>
+
+      {/* Inscription liste de diffusion (F1) — succès simulé. */}
+      <Container className="py-8">
+        <MailingSignup />
+      </Container>
+
+      {/* Avis Google — note réelle, exemples reformulés (inchangé). */}
+      <Container className="space-y-4 py-8">
+        <h2 className="text-2xl">Ils nous recommandent</h2>
         <p className="text-sm text-ink/80">
           <Stars n={REVIEWS.rating} />{' '}
           <strong className="text-primary-dark">{REVIEWS.rating.toFixed(1)}/5</strong> ·{' '}

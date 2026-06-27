@@ -58,7 +58,11 @@ export function UniversPage() {
         title={u.name}
         subtitle={u.tagline}
         actions={
-          <Link to="/contact" className={buttonClasses('accent', 'lg')}>
+          <Link
+            to="/contact"
+            state={{ event: u.name }}
+            className={buttonClasses('accent', 'lg')}
+          >
             {u.ctaLabel}
           </Link>
         }
@@ -97,7 +101,11 @@ export function UniversPage() {
         )}
 
         <div className="flex justify-center pt-2">
-          <Link to="/contact" className={buttonClasses('primary', 'lg')}>
+          <Link
+            to="/contact"
+            state={{ event: u.name }}
+            className={buttonClasses('primary', 'lg')}
+          >
             {u.ctaLabel}
           </Link>
         </div>

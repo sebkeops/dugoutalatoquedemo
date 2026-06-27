@@ -6,6 +6,7 @@ import { logoUrl, SITE } from '../data'
 
 const NAV = [
   { to: '/', label: 'Accueil', end: true },
+  { to: '/restaurant', label: 'Restaurant', end: false },
   { to: '/traiteur', label: 'Traiteur', end: false },
   { to: '/a-emporter', label: 'À emporter', end: false },
   { to: '/styleguide', label: 'Styleguide', end: false },

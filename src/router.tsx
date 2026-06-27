@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { AppShell } from './layout/AppShell'
 import { HomePage } from './pages/HomePage'
+import { RestaurantPage } from './pages/RestaurantPage'
 import { TraiteurPage } from './pages/TraiteurPage'
 import { UniversPage } from './pages/UniversPage'
 import { AEmporterPage } from './pages/AEmporterPage'
@@ -17,6 +18,7 @@ export const router = createBrowserRouter([
     element: <AppShell />,
     children: [
       { index: true, element: <HomePage /> },
+      { path: 'restaurant', element: <RestaurantPage /> },
       { path: 'traiteur', element: <TraiteurPage /> },
       { path: 'traiteur/:slug', element: <UniversPage /> },
       { path: 'a-emporter', element: <AEmporterPage /> },
