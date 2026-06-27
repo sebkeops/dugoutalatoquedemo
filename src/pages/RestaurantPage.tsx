@@ -23,7 +23,7 @@ export function RestaurantPage() {
         subtitle="Une cuisine faite maison, au rythme du marché et des saisons."
       />
 
-      <Container className="space-y-8 py-8">
+      <Container width="wide" className="space-y-8 py-8">
         {/* La formule du midi — décrite, sans afficher le menu. */}
         <section className="space-y-3">
           <h2 className="text-2xl">La formule du midi</h2>

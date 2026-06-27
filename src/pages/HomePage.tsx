@@ -47,7 +47,7 @@ export function HomePage() {
       />
 
       {/* Le restaurant — identité première : teaser vers /restaurant. */}
-      <Container className="space-y-4 py-8">
+      <Container width="wide" className="space-y-4 py-8">
         <h2 className="text-2xl">Le restaurant</h2>
         <Card>
           <p className="text-sm text-ink/80">
@@ -61,7 +61,7 @@ export function HomePage() {
       </Container>
 
       {/* Soirée à thème du mois. */}
-      <Container className="space-y-4 py-8">
+      <Container width="wide" className="space-y-4 py-8">
         <h2 className="text-2xl">Soirée à thème du mois</h2>
         <Card accent>
           <p className="text-xs font-semibold uppercase tracking-label text-accent-strong">
@@ -135,7 +135,7 @@ export function HomePage() {
       </Container>
 
       {/* Coordonnées & horaires — adresse incluse. */}
-      <Container className="space-y-4 py-8">
+      <Container width="wide" className="space-y-4 py-8">
         <h2 className="text-2xl">Nous trouver</h2>
         <Card>
           <dl className="space-y-2 text-sm">
@@ -161,12 +161,12 @@ export function HomePage() {
       </Container>
 
       {/* Inscription liste de diffusion (F1) — succès simulé. */}
-      <Container className="py-8">
+      <Container width="wide" className="py-8">
         <MailingSignup />
       </Container>
 
       {/* Avis Google — note réelle, exemples reformulés (inchangé). */}
-      <Container className="space-y-4 py-8">
+      <Container width="wide" className="space-y-4 py-8">
         <h2 className="text-2xl">Ils nous recommandent</h2>
         <p className="text-sm text-ink/80">
           <Stars n={REVIEWS.rating} />{' '}

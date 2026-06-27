@@ -149,7 +149,7 @@ export function AppShell({ children }: { children?: ReactNode }) {
         <main className="flex-1">{children ?? <Outlet />}</main>
 
         <footer className="border-t border-secondary/40 bg-surface">
-          <Container className="flex flex-col gap-4 py-6 text-sm text-secondary sm:flex-row sm:items-start sm:justify-between">
+          <Container width="wide" className="flex flex-col gap-4 py-6 text-sm text-secondary sm:flex-row sm:items-start sm:justify-between">
             <div className="flex items-center gap-3">
               <img
                 src={logoUrl}
@@ -171,7 +171,7 @@ export function AppShell({ children }: { children?: ReactNode }) {
               <p className="text-xs">{SITE.restaurant.label} : {SITE.restaurant.hours}</p>
             </div>
           </Container>
-          <Container className="flex flex-wrap items-center justify-between gap-2 pb-5">
+          <Container width="wide" className="flex flex-wrap items-center justify-between gap-2 pb-5">
             <p className="text-xs text-secondary">
               Simulation de démonstration — aucune commande réelle n'est traitée.
             </p>
