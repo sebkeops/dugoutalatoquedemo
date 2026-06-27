@@ -7,7 +7,7 @@ import {
   MailingSignup,
   Photo,
 } from '../components'
-import { EVENEMENTS, REVIEWS, SITE, SOIREE_DU_MOIS, UNIVERS } from '../data'
+import { EVENEMENTS, heroUrl, REVIEWS, SITE, SOIREE_DU_MOIS, UNIVERS } from '../data'
 
 function Stars({ n }: { n: number }) {
   return (
@@ -25,6 +25,8 @@ export function HomePage() {
     <>
       {/* Hero — deux entrées distinctes et équivalentes : Restaurant / Traiteur. */}
       <Hero
+        image={heroUrl}
+        imagePosition="center"
         eyebrow={`${SITE.baseline} · Léguevin`}
         title="La cuisine d’ici, faite maison"
         subtitle="Le restaurant à midi, le traiteur pour vos plus beaux événements."

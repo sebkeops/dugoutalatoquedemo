@@ -2,9 +2,9 @@
  * Résolution des images optimisées (src/assets/photos) en URLs servies par Vite.
  *
  * On passe par import.meta.glob plutôt que par des chemins en dur : les URLs sont
- * hachées et résolues selon la `base` Vite (`base: './'`), donc robustes en
- * déploiement sous-chemin (GitHub Pages, etc.). Les données (univers, événements)
- * ne stockent que des noms de fichiers ; `photoUrl()` fait la correspondance.
+ * hachées et résolues selon la `base` Vite, donc robustes en déploiement. Les
+ * données (univers, événements) ne stockent que des noms de fichiers ;
+ * `photoUrl()` fait la correspondance.
  *
  * Les fichiers proviennent du pipeline `scripts/optimize-assets.mjs`
  * (sources/ -> src/assets/photos/), jamais de `sources/` directement.
@@ -31,6 +31,13 @@ export function photoUrl(name: string): string | undefined {
 
 /** URL du logo optimisé (src/assets/logo.jpg). */
 export const logoUrl = logo
+
+/**
+ * URL de la photo de fond du hero HomePage, servie en statique depuis
+ * public/assets (générée par le pipeline, pas depuis sources/). Résolue via
+ * `BASE_URL` pour rester correcte quelle que soit la base de déploiement.
+ */
+export const heroUrl = `${import.meta.env.BASE_URL}assets/hero.jpg`
 
 /** Tous les noms de photos disponibles (utile pour debug / galeries auto). */
 export const photoNames = Object.keys(byName).sort()

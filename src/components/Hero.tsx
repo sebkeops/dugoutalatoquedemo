@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, ReactNode } from 'react'
 import { Container } from './Container'
 
 type Tone = 'brand' | 'event'
@@ -11,7 +11,11 @@ type Tone = 'brand' | 'event'
  *  - `brand` (défaut) : fond brun — structure, restaurant, navigation ;
  *  - `event` : accent terracotta — événementiel / traiteur (rappel des affiches menus).
  *
- * `image` pose une photo de fond ; un voile garantit la lisibilité du texte.
+ * `image` pose une photo de fond ; deux calques en dégradé (couleur de marque)
+ * garantissent la lisibilité du texte clair — plus denses à GAUCHE et en BAS, là
+ * où se trouvent l'eyebrow, le titre et les boutons. `imagePosition` ajuste le
+ * cadrage (object-position) pour garder le sujet visible. Sans `image`, le
+ * comportement actuel (fond plein) est inchangé.
  */
 export function Hero({
   eyebrow,
@@ -19,6 +23,7 @@ export function Hero({
   subtitle,
   actions,
   image,
+  imagePosition,
   tone = 'brand',
   className = '',
 }: {
@@ -27,11 +32,26 @@ export function Hero({
   subtitle?: ReactNode
   actions?: ReactNode
   image?: string
+  /** object-position de la photo (ex. "center", "center 40%"). Défaut : centré. */
+  imagePosition?: string
   tone?: Tone
   className?: string
 }) {
   const solid = tone === 'event' ? 'bg-accent-strong' : 'bg-primary-dark'
-  const veil = tone === 'event' ? 'bg-accent-strong/70' : 'bg-primary-dark/65'
+  // Calque horizontal : dense à gauche (texte), photo visible à droite.
+  const veilSide =
+    tone === 'event'
+      ? 'bg-gradient-to-r from-accent-strong/90 via-accent-strong/65 to-accent-strong/30'
+      : 'bg-gradient-to-r from-primary-dark/90 via-primary-dark/65 to-primary-dark/30'
+  // Calque vertical : densité supplémentaire en bas (boutons / sous-titre).
+  const veilBottom =
+    tone === 'event'
+      ? 'bg-gradient-to-t from-accent-strong/55 to-transparent'
+      : 'bg-gradient-to-t from-primary-dark/55 to-transparent'
+
+  const imgStyle: CSSProperties | undefined = imagePosition
+    ? { objectPosition: imagePosition }
+    : undefined
 
   return (
     <section
@@ -43,9 +63,11 @@ export function Hero({
             src={image}
             alt=""
             aria-hidden="true"
+            style={imgStyle}
             className="absolute inset-0 h-full w-full object-cover"
           />
-          <div className={`absolute inset-0 ${veil}`} />
+          <div className={`absolute inset-0 ${veilSide}`} />
+          <div className={`absolute inset-0 ${veilBottom}`} />
         </>
       )}
 

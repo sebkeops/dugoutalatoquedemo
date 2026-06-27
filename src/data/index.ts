@@ -13,4 +13,4 @@ export {
   type FormuleFeature,
   type FormuleCategory,
 } from './formules'
-export { photoUrl, logoUrl, photoNames } from './images'
+export { photoUrl, logoUrl, heroUrl, photoNames } from './images'

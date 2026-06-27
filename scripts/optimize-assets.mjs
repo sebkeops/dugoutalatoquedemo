@@ -24,6 +24,8 @@ const SRC = 'sources'
 const OUT_PHOTOS = 'src/assets/photos'
 const OUT_LOGO_APP = 'src/assets/logo.jpg'
 const OUT_LOGO_FAVICON = 'public/assets/logo.jpg'
+// Photo de fond du hero HomePage, servie en statique depuis public/assets.
+const OUT_HERO = 'public/assets/hero.jpg'
 
 const MAX_EDGE = 1600
 const QUALITY = 78
@@ -90,6 +92,15 @@ async function run() {
       console.log(`  ${out}  ${(size / 1024).toFixed(0)} KB`)
     }
   }
+
+  // Hero HomePage : photo de fond, largeur <= 1600px, q78, vers public/assets.
+  await sharp(path.join(SRC, 'hero.jpg'))
+    .rotate()
+    .resize(MAX_EDGE, MAX_EDGE, { fit: 'inside', withoutEnlargement: true })
+    .jpeg({ quality: QUALITY, mozjpeg: true })
+    .toFile(OUT_HERO)
+  total += fs.statSync(OUT_HERO).size
+  console.log(`  ${OUT_HERO}  ${(fs.statSync(OUT_HERO).size / 1024).toFixed(0)} KB`)
 
   // Logo : carré ~512px, qualité un peu plus haute (peu de fichiers).
   for (const out of [OUT_LOGO_APP, OUT_LOGO_FAVICON]) {
