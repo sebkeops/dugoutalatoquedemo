@@ -34,9 +34,10 @@ export function buttonClasses(
 ): string {
   return [
     'inline-flex items-center justify-center gap-2 rounded-button font-semibold',
-    'transition-colors focus-visible:outline-none focus-visible:ring-2',
+    'transition-all duration-200 focus-visible:outline-none focus-visible:ring-2',
     'focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-cream',
-    'disabled:cursor-not-allowed disabled:opacity-50',
+    'hover:-translate-y-0.5 active:translate-y-0',
+    'disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0',
     VARIANTS[variant],
     SIZES[size],
     className,

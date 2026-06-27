@@ -1,5 +1,7 @@
 // Point d'entrée unique des composants partagés.
 export { Container } from './Container'
+export { Section } from './Section'
+export { Reveal } from './Reveal'
 export { Button, buttonClasses } from './Button'
 export { Card } from './Card'
 export { Badge } from './Badge'

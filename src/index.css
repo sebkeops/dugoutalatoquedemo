@@ -20,6 +20,9 @@
   h3,
   h4 {
     @apply font-heading text-primary-dark;
+    /* Fraunces : légère condensation + équilibrage des retours à la ligne. */
+    letter-spacing: -0.01em;
+    text-wrap: balance;
     /* Sécurité mobile : un long mot insécable (placeholders, URLs) se coupe
        au lieu de déborder à ~375px. */
     overflow-wrap: break-word;
@@ -27,5 +30,51 @@
 
   p {
     overflow-wrap: break-word;
+  }
+}
+
+/* --- Animations : révélation au scroll + micro-interactions --- */
+@layer utilities {
+  /* Élément masqué jusqu'à son entrée dans le viewport (classe ajoutée par <Reveal>). */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Lien à soulignement animé. */
+  .link-underline {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-size: 0% 1px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.3s ease;
+  }
+  .link-underline:hover {
+    background-size: 100% 1px;
+  }
+}
+
+/* Accessibilité : respect de prefers-reduced-motion (désactive/atténue tout). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

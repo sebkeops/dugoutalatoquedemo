@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
-import { buttonClasses, Container, Hero, Photo } from '../components'
-import { EVENEMENTS } from '../data'
+import { buttonClasses, Hero, Photo, Reveal, Section } from '../components'
+import { EVENEMENTS, photoUrl } from '../data'
 
 /**
  * Événements « à emporter » — les 4 dates fixes du client.
@@ -13,44 +13,49 @@ export function AEmporterPage() {
       <Hero
         eyebrow="À emporter"
         tone="event"
+        image={photoUrl('a-emporter-01.jpg')}
         title="Nos événements à emporter"
         subtitle="Quatre rendez-vous gourmands dans l’année : commandez, on prépare, vous emportez."
       />
 
-      <Container width="wide" className="space-y-6 py-8">
+      <Section kicker="Le calendrier" title="Quatre rendez-vous gourmands" tone="cream">
         <div className="grid gap-5 sm:grid-cols-2">
-          {EVENEMENTS.map((e) => (
-            <article
-              key={e.slug}
-              className="overflow-hidden rounded-card border border-secondary/25 bg-surface shadow-card"
-            >
-              <div className="aspect-[16/10] overflow-hidden">
-                <Photo file={e.cover.file} alt={e.cover.alt} />
-              </div>
-              <div className="space-y-2 p-4">
-                <div className="flex items-baseline justify-between gap-2">
-                  <h2 className="font-heading text-xl text-primary-dark">{e.name}</h2>
-                  <span className="text-xs font-medium uppercase tracking-label text-accent-strong">
-                    {e.periode}
-                  </span>
+          {EVENEMENTS.map((e, i) => (
+            <Reveal key={e.slug} delay={i * 70} className="h-full">
+              <article className="group h-full overflow-hidden rounded-card border border-secondary/35 bg-surface shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-lifted">
+                <div className="aspect-[16/10] overflow-hidden">
+                  <Photo
+                    file={e.cover.file}
+                    alt={e.cover.alt}
+                    className="transition-transform duration-500 group-hover:scale-105"
+                  />
                 </div>
-                <p className="text-sm text-ink/80">{e.tagline}</p>
-              </div>
-            </article>
+                <div className="space-y-2 p-5">
+                  <div className="flex items-baseline justify-between gap-2">
+                    <h3 className="font-heading text-xl text-primary-dark">{e.name}</h3>
+                    <span className="text-xs font-medium uppercase tracking-label text-accent-strong">
+                      {e.periode}
+                    </span>
+                  </div>
+                  <p className="text-ink/80">{e.tagline}</p>
+                </div>
+              </article>
+            </Reveal>
           ))}
         </div>
 
-        <p className="text-center text-sm text-secondary">
-          La commande en ligne (créneaux de retrait au quart d’heure) est incluse dans la
-          formule Complète.
-        </p>
-
-        <div className="flex justify-center">
-          <Link to="/contact" className={buttonClasses('accent', 'lg')}>
-            Être prévenu des prochaines dates
-          </Link>
-        </div>
-      </Container>
+        <Reveal className="mt-10">
+          <div className="flex flex-col items-center gap-4 text-center">
+            <p className="text-sm text-secondary">
+              La commande en ligne (créneaux de retrait au quart d’heure) est incluse dans
+              la formule Complète.
+            </p>
+            <Link to="/contact" className={buttonClasses('accent', 'lg')}>
+              Être prévenu des prochaines dates →
+            </Link>
+          </div>
+        </Reveal>
+      </Section>
     </>
   )
 }

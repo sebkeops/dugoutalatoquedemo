@@ -1,6 +1,6 @@
 import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
-import { buttonClasses, Container, Hero } from '../components'
+import { buttonClasses, Container, Hero, Reveal } from '../components'
 import { FORMULE_AUTONOMIE, FORMULE_CATEGORIES } from '../data'
 import { useTier } from '../tiers'
 import { isUnlocked, TIERS, type Tier } from '../tiers/types'
@@ -40,8 +40,9 @@ export function FormulesPage() {
         subtitle="Comparez ce qui est inclus à chaque niveau. Vous pourrez monter d’un cran à tout moment."
       />
 
-      <Container width="wide" className="space-y-8 py-8">
-        <div className="overflow-hidden rounded-card border border-secondary/25 shadow-card">
+      <Container width="wide" className="space-y-10 py-12 md:py-16">
+        <Reveal>
+          <div className="overflow-hidden rounded-card border border-secondary/35 shadow-card">
           <table className="w-full border-collapse text-sm">
             <thead>
               <tr className="bg-surface">
@@ -112,20 +113,21 @@ export function FormulesPage() {
               </tr>
             </tbody>
           </table>
-        </div>
+          </div>
+        </Reveal>
 
         {/* CTA par formule */}
         <div className="grid gap-4 sm:grid-cols-3">
-          {COLS.map((t) => {
+          {COLS.map((t, i) => {
             const info = TIERS[t]
             return (
-              <div
-                key={t}
-                className={[
-                  'flex flex-col rounded-card border bg-surface p-5 shadow-card',
-                  info.recommended ? 'border-accent-strong' : 'border-secondary/25',
-                ].join(' ')}
-              >
+              <Reveal key={t} delay={i * 70} className="h-full">
+                <div
+                  className={[
+                    'flex h-full flex-col rounded-card border bg-surface p-6 shadow-card',
+                    info.recommended ? 'border-accent-strong' : 'border-secondary/35',
+                  ].join(' ')}
+                >
                 <div className="flex items-center justify-between gap-2">
                   <h2 className="font-heading text-lg text-primary-dark">
                     {info.code} · {info.name}
@@ -153,7 +155,8 @@ export function FormulesPage() {
                     Prévisualiser {info.code} dans la démo
                   </button>
                 </div>
-              </div>
+                </div>
+              </Reveal>
             )
           })}
         </div>

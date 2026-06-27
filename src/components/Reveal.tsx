@@ -1,0 +1,61 @@
+import {
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from 'react'
+
+/**
+ * Révèle son contenu (fondu + léger translateY) à l'entrée dans le viewport.
+ * - IntersectionObserver, observation unique (déconnecté après apparition) ;
+ * - `delay` (ms) pour un effet de stagger sur les grilles ;
+ * - fallback visible si IO indisponible ; `prefers-reduced-motion` neutralise
+ *   l'effet via la CSS (.reveal forcé visible).
+ *
+ * Rendu : un <div> (devient la cellule de grille si placé dans un grid).
+ */
+export function Reveal({
+  children,
+  delay = 0,
+  className = '',
+}: {
+  children: ReactNode
+  delay?: number
+  className?: string
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    if (typeof IntersectionObserver === 'undefined') {
+      setVisible(true)
+      return
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            setVisible(true)
+            io.disconnect()
+          }
+        }
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -10% 0px' },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  return (
+    <div
+      ref={ref}
+      style={{ '--reveal-delay': `${delay}ms` } as CSSProperties}
+      className={`reveal ${visible ? 'is-visible' : ''} ${className}`}
+    >
+      {children}
+    </div>
+  )
+}

@@ -20,26 +20,38 @@ export default {
         'on-accent': palette.onAccent,
       },
       fontFamily: {
-        heading: ['Georgia', 'Times New Roman', 'serif'],
-        body: ['system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+        // Titres : Fraunces (display serif chaleureux). Corps : Inter (humaniste).
+        heading: ['"Fraunces Variable"', 'Fraunces', 'Georgia', 'serif'],
+        body: ['"Inter Variable"', 'Inter', 'system-ui', 'sans-serif'],
       },
       fontSize: {
-        // Échelle artisanale (voir src/theme/tokens.ts → typeScale).
-        display: ['2.5rem', { lineHeight: '1.1', fontWeight: '700' }],
+        // Échelle éditoriale (voir src/theme/tokens.ts → typeScale).
+        display: ['2.75rem', { lineHeight: '1.04', fontWeight: '600' }],
+        'display-lg': ['3.75rem', { lineHeight: '1.0', fontWeight: '600' }],
       },
       borderRadius: {
-        button: '0.5rem',
-        card: '0.75rem',
+        button: '0.625rem',
+        card: '1rem',
         pill: '9999px',
       },
       boxShadow: {
-        // Ombres discrètes, teintées brun plutôt que noir pur.
+        // Ombres chaudes (teintées brun), plus de profondeur.
         soft: '0 1px 2px rgba(58, 44, 35, 0.06)',
-        card: '0 4px 16px -6px rgba(58, 44, 35, 0.12)',
-        lifted: '0 12px 32px -10px rgba(58, 44, 35, 0.20)',
+        card: '0 8px 24px -8px rgba(58, 44, 35, 0.18)',
+        lifted: '0 18px 40px -12px rgba(58, 44, 35, 0.28)',
       },
       letterSpacing: {
         label: '0.08em',
+      },
+      keyframes: {
+        kenburns: {
+          '0%': { transform: 'scale(1)' },
+          '100%': { transform: 'scale(1.08)' },
+        },
+      },
+      animation: {
+        // Ken-burns lent sur les photos de hero (atténué si reduced-motion).
+        kenburns: 'kenburns 22s ease-out forwards',
       },
     },
   },

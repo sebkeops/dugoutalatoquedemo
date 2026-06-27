@@ -1,8 +1,8 @@
 import { useId, type ReactNode } from 'react'
 
 const fieldClasses = [
-  'w-full rounded-button border border-secondary/50 bg-cream px-3 py-2 text-ink',
-  'placeholder:text-secondary/70',
+  'w-full rounded-button border border-secondary/70 bg-cream px-3.5 py-2.5 text-ink',
+  'placeholder:text-secondary/70 transition-colors',
   'focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/40',
 ].join(' ')
 

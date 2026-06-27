@@ -15,12 +15,12 @@ export const colors = rawPalette as {
   onAccent: string
 }
 
-/** Familles typographiques centralisées. */
+/** Familles typographiques centralisées (self-hostées via @fontsource-variable). */
 export const fonts = {
-  // Titres — empattements pour l'ambiance artisanale (police définitive câblée plus tard).
-  heading: "'Georgia', 'Times New Roman', serif",
-  // Corps de texte.
-  body: "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+  // Titres — Fraunces (display serif chaleureux, ambiance artisanale).
+  heading: "'Fraunces Variable', Fraunces, Georgia, serif",
+  // Corps — Inter (humaniste, lisible).
+  body: "'Inter Variable', Inter, system-ui, sans-serif",
 }
 
 /**
