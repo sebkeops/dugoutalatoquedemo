@@ -9,6 +9,7 @@ const NAV = [
   { to: '/restaurant', label: 'Restaurant', end: false },
   { to: '/traiteur', label: 'Traiteur', end: false },
   { to: '/a-emporter', label: 'À emporter', end: false },
+  { to: '/gestion', label: 'Gestion', end: false },
   { to: '/styleguide', label: 'Styleguide', end: false },
 ]
 

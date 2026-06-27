@@ -57,3 +57,55 @@ export interface Evenement {
   cover: Photo
   minTier: Tier
 }
+
+// --- Données back-office (mockups) — tout est fictif/simulé ---
+
+/** Statut d'un message de devis dans la modération. */
+export type MessageStatut = 'nouveau' | 'traité' | 'archivé'
+
+/**
+ * Message de devis reçu — reflète les champs du formulaire devis réel
+ * (univers, date, nb de personnes, budget, commentaire) pour la cohérence démo.
+ */
+export interface MessageDevis {
+  id: string
+  nom: string
+  email: string
+  /** Slug d'univers (réf. UNIVERS). */
+  universSlug: string
+  /** Date de l'événement souhaitée. */
+  dateEvenement: string
+  /** Date de réception du message. */
+  recuLe: string
+  personnes: number
+  budget: string
+  commentaire: string
+  statut: MessageStatut
+}
+
+/** Statut d'une commande événement à emporter. */
+export type CommandeStatut = 'nouvelle' | 'confirmée' | 'préparée'
+
+export interface CommandeArticle {
+  libelle: string
+  qte: number
+}
+
+/** Commande d'un événement à emporter, avec créneau de retrait. */
+export interface Commande {
+  id: string
+  client: string
+  /** Slug d'événement (réf. EVENEMENTS). */
+  evenementSlug: string
+  /** Créneau de retrait au quart d'heure, ex. "10:15". */
+  creneau: string
+  articles: CommandeArticle[]
+  statut: CommandeStatut
+}
+
+/** Contact de la liste de diffusion. */
+export interface Contact {
+  nom: string
+  email: string
+  inscritLe: string
+}

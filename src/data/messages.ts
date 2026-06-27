@@ -1,0 +1,82 @@
+import type { MessageDevis } from './types'
+
+/**
+ * Messages de devis reçus (fictifs) pour le mockup de modération.
+ * La forme reflète le formulaire devis réel (univers, date, nb personnes,
+ * budget, commentaire). `universSlug` référence src/data/univers.ts.
+ */
+export const MESSAGES: MessageDevis[] = [
+  {
+    id: 'm-2041',
+    nom: 'Camille Besson',
+    email: 'camille.besson@exemple.fr',
+    universSlug: 'mariage',
+    dateEvenement: '2026-09-12',
+    recuLe: '2026-06-21',
+    personnes: 90,
+    budget: 'à définir ensemble',
+    commentaire:
+      'Réception en extérieur près de Léguevin, cocktail dînatoire puis repas assis.',
+    statut: 'nouveau',
+  },
+  {
+    id: 'm-2040',
+    nom: 'Sébastien Pujol',
+    email: 's.pujol@exemple.fr',
+    universSlug: 'entreprise',
+    dateEvenement: '2026-07-03',
+    recuLe: '2026-06-20',
+    personnes: 45,
+    budget: '25 € / personne env.',
+    commentaire: 'Séminaire, buffet froid sur place, sans service. Salle climatisée.',
+    statut: 'nouveau',
+  },
+  {
+    id: 'm-2039',
+    nom: 'Aurélie Marty',
+    email: 'aurelie.marty@exemple.fr',
+    universSlug: 'mariage',
+    dateEvenement: '2027-05-29',
+    recuLe: '2026-06-18',
+    personnes: 120,
+    budget: 'menu 2',
+    commentaire: 'Mariage, atelier découpe de jambon et bar à huîtres souhaités.',
+    statut: 'traité',
+  },
+  {
+    id: 'm-2038',
+    nom: 'Nicolas Fabre',
+    email: 'n.fabre@exemple.fr',
+    universSlug: 'cocktail-buffet',
+    dateEvenement: '2026-06-30',
+    recuLe: '2026-06-16',
+    personnes: 30,
+    budget: '—',
+    commentaire: 'Pot de départ au bureau, cocktail apéritif en fin de journée.',
+    statut: 'traité',
+  },
+  {
+    id: 'm-2037',
+    nom: 'Hélène Roca',
+    email: 'helene.roca@exemple.fr',
+    universSlug: 'plateaux',
+    dateEvenement: '2026-07-01',
+    recuLe: '2026-06-15',
+    personnes: 12,
+    budget: '—',
+    commentaire: 'Plateaux-repas livrés pour une réunion, midi.',
+    statut: 'archivé',
+  },
+  {
+    id: 'm-2036',
+    nom: 'Damien Lacombe',
+    email: 'd.lacombe@exemple.fr',
+    universSlug: 'entreprise',
+    dateEvenement: '2026-09-19',
+    recuLe: '2026-06-13',
+    personnes: 60,
+    budget: 'à discuter',
+    commentaire: 'Inauguration de locaux, buffet avec service et boissons sans alcool.',
+    statut: 'nouveau',
+  },
+]

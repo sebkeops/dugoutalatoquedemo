@@ -7,6 +7,11 @@ import { UniversPage } from './pages/UniversPage'
 import { AEmporterPage } from './pages/AEmporterPage'
 import { ContactPage } from './pages/ContactPage'
 import { StyleguidePage } from './pages/StyleguidePage'
+import { GestionPage } from './mockups/GestionPage'
+import { ModerationMessages } from './mockups/ModerationMessages'
+import { MailingTool } from './mockups/MailingTool'
+import { ContentManager } from './mockups/ContentManager'
+import { OrdersManager } from './mockups/OrdersManager'
 
 /**
  * Routeur de l'application.
@@ -23,6 +28,11 @@ export const router = createBrowserRouter([
       { path: 'traiteur/:slug', element: <UniversPage /> },
       { path: 'a-emporter', element: <AEmporterPage /> },
       { path: 'contact', element: <ContactPage /> },
+      { path: 'gestion', element: <GestionPage /> },
+      { path: 'gestion/messages', element: <ModerationMessages /> },
+      { path: 'gestion/mailing', element: <MailingTool /> },
+      { path: 'gestion/contenu', element: <ContentManager /> },
+      { path: 'gestion/commandes', element: <OrdersManager /> },
       { path: 'styleguide', element: <StyleguidePage /> },
     ],
   },
