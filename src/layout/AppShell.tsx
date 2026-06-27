@@ -9,6 +9,7 @@ const NAV = [
   { to: '/restaurant', label: 'Restaurant', end: false },
   { to: '/traiteur', label: 'Traiteur', end: false },
   { to: '/a-emporter', label: 'À emporter', end: false },
+  { to: '/formules', label: 'Formules', end: false },
   { to: '/gestion', label: 'Gestion', end: false },
   { to: '/styleguide', label: 'Styleguide', end: false },
 ]
@@ -29,7 +30,7 @@ function LogoSlot() {
         alt={SITE.name}
         className="h-10 w-10 rounded-full object-cover ring-1 ring-secondary/30"
       />
-      <span className="hidden font-heading text-lg leading-tight text-primary-dark sm:inline">
+      <span className="hidden whitespace-nowrap font-heading text-lg leading-tight text-primary-dark sm:inline">
         {SITE.name}
       </span>
     </NavLink>
@@ -50,8 +51,8 @@ function NavBar() {
 
   return (
     <>
-      {/* md+ : liens en ligne */}
-      <nav className="hidden items-center gap-1 md:flex" aria-label="Navigation principale">
+      {/* lg+ : liens en ligne */}
+      <nav className="hidden items-center gap-1 lg:flex" aria-label="Navigation principale">
         {NAV.map((item) => (
           <NavLink key={item.to} to={item.to} end={item.end} className={navLinkClass}>
             {item.label}
@@ -59,8 +60,8 @@ function NavBar() {
         ))}
       </nav>
 
-      {/* mobile : bouton + panneau déroulant */}
-      <div className="relative md:hidden">
+      {/* mobile / tablette : bouton + panneau déroulant */}
+      <div className="relative lg:hidden">
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
@@ -115,7 +116,7 @@ export function AppShell({ children }: { children?: ReactNode }) {
     <TierProvider>
       <div className="flex min-h-screen flex-col bg-cream">
         <header className="sticky top-0 z-30 border-b border-secondary/40 bg-surface/95 backdrop-blur">
-          <Container className="flex items-center justify-between gap-3 py-3">
+          <Container width="wide" className="flex items-center justify-between gap-3 py-3">
             <LogoSlot />
             <NavBar />
           </Container>

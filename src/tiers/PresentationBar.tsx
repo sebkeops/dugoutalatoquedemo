@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { TIERS, type Tier } from './types'
 import { useTier } from './TierContext'
 
@@ -16,9 +17,15 @@ export function PresentationBar() {
   return (
     <div className="sticky bottom-0 z-30 border-t border-secondary/40 bg-surface/95 backdrop-blur">
       <div className="mx-auto flex w-full max-w-screen-sm items-center justify-between gap-3 px-4 py-2">
-        <span className="text-xs font-medium uppercase tracking-label text-secondary">
+        <Link
+          to="/formules"
+          className="text-xs font-medium uppercase tracking-label text-secondary hover:text-primary-dark"
+        >
           Mode présentation
-        </span>
+          <span className="ml-1 hidden normal-case text-primary underline sm:inline">
+            · comparer
+          </span>
+        </Link>
         <div
           className="inline-flex rounded-pill border border-secondary/50 bg-cream p-0.5"
           role="group"

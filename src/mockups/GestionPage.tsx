@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
-import { Container, DemoBanner } from '../components'
-import { TierBadge, TierGate } from '../tiers'
+import { Card, Container, DemoBanner } from '../components'
+import { TierBadge, TierGate, useTier } from '../tiers'
 import { MOCKUP_SCREENS } from './screens'
 
 /**
@@ -10,6 +10,8 @@ import { MOCKUP_SCREENS } from './screens'
  * présentation. Tout est une démonstration : aucun écran n'est fonctionnel.
  */
 export function GestionPage() {
+  const { tier } = useTier()
+
   return (
     <div className="min-h-[60vh] bg-cream">
       <DemoBanner />
@@ -22,6 +24,29 @@ export function GestionPage() {
             basculez le mode présentation (en bas) pour les comparer.
           </p>
         </header>
+
+        {tier === 1 && (
+          <Card accent>
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="font-heading text-lg text-primary-dark">
+                Espace gestion non inclus en formule Vitrine
+              </h2>
+              <TierBadge minTier={2} compact />
+            </div>
+            <p className="mt-1 text-sm text-ink/80">
+              En formule Vitrine (F1), votre site reste autonome côté présentation, mais
+              les outils de gestion (modération, mailing, contenu, commandes) sont inclus à
+              partir de la formule Intermédiaire. Découvrez-les en basculant le mode
+              présentation sur F2 ou F3.
+            </p>
+            <Link
+              to="/formules"
+              className="mt-3 inline-block text-sm font-semibold text-primary underline"
+            >
+              Comparer les formules →
+            </Link>
+          </Card>
+        )}
 
         <div className="grid gap-5 sm:grid-cols-2">
           {MOCKUP_SCREENS.map((s) => (

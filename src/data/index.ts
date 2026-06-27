@@ -7,4 +7,10 @@ export { SITE, REVIEWS } from './site'
 export { MESSAGES } from './messages'
 export { COMMANDES } from './commandes'
 export { CONTACTS, CONTACTS_TOTAL } from './diffusion'
+export {
+  FORMULE_CATEGORIES,
+  FORMULE_AUTONOMIE,
+  type FormuleFeature,
+  type FormuleCategory,
+} from './formules'
 export { photoUrl, logoUrl, photoNames } from './images'
