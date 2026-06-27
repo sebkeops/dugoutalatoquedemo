@@ -1,8 +1,28 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import { Container } from '../components'
+import { Container, DemoIntro } from '../components'
 import { PresentationBar, TierProvider } from '../tiers'
+import type { Tier } from '../tiers/types'
 import { logoUrl, SITE } from '../data'
+
+/**
+ * Paramètres de partage lus UNE fois au chargement (persistants sur la session,
+ * même si la query est perdue lors d'une navigation interne) :
+ *  - `?demo=1` : affiche la barre de mode présentation (outil de vente).
+ *               Sans ce paramètre, l'URL est « propre », figée sur la formule
+ *               par défaut (F2), sans barre.
+ *  - `?tier=1|2|3` : formule présentée au démarrage (défaut 2 = recommandée).
+ */
+function readShareParams(): { demo: boolean; tier: Tier } {
+  try {
+    const p = new URLSearchParams(window.location.search)
+    const t = Number(p.get('tier'))
+    const tier: Tier = t === 1 || t === 2 || t === 3 ? (t as Tier) : 2
+    return { demo: p.get('demo') === '1', tier }
+  } catch {
+    return { demo: false, tier: 2 }
+  }
+}
 
 const NAV = [
   { to: '/', label: 'Accueil', end: true },
@@ -112,9 +132,13 @@ function NavBar() {
  * et la <PresentationBar> (en flux, sticky bas) permet de basculer F1/F2/F3.
  */
 export function AppShell({ children }: { children?: ReactNode }) {
+  const [{ demo, tier: initialTier }] = useState(readShareParams)
+  const [presenter, setPresenter] = useState(demo)
+
   return (
-    <TierProvider>
+    <TierProvider initialTier={initialTier}>
       <div className="flex min-h-screen flex-col bg-cream">
+        <DemoIntro />
         <header className="sticky top-0 z-30 border-b border-secondary/40 bg-surface/95 backdrop-blur">
           <Container width="wide" className="flex items-center justify-between gap-3 py-3">
             <LogoSlot />
@@ -147,14 +171,23 @@ export function AppShell({ children }: { children?: ReactNode }) {
               <p className="text-xs">{SITE.restaurant.label} : {SITE.restaurant.hours}</p>
             </div>
           </Container>
-          <Container className="pb-5">
+          <Container className="flex flex-wrap items-center justify-between gap-2 pb-5">
             <p className="text-xs text-secondary">
               Simulation de démonstration — aucune commande réelle n'est traitée.
             </p>
+            {!presenter && (
+              <button
+                type="button"
+                onClick={() => setPresenter(true)}
+                className="text-xs font-medium text-secondary underline hover:text-primary-dark"
+              >
+                Activer le mode présentation
+              </button>
+            )}
           </Container>
         </footer>
 
-        <PresentationBar />
+        {presenter && <PresentationBar onClose={() => setPresenter(false)} />}
       </div>
     </TierProvider>
   )

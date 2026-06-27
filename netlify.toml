@@ -1,0 +1,10 @@
+# Configuration Netlify (alternative à Vercel).
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+# Fallback SPA : toutes les routes -> index.html (liens profonds + rafraîchissement).
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
