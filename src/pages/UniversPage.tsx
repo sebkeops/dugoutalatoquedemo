@@ -1,11 +1,13 @@
 import { Link, useParams } from 'react-router-dom'
 import {
   AfficheMenu,
+  Banner,
   buttonClasses,
   Card,
   Container,
-  Gallery,
+  FeatureRow,
   Hero,
+  MosaicGallery,
   Reveal,
   Section,
 } from '../components'
@@ -59,9 +61,12 @@ export function UniversPage() {
     )
   }
 
-  const heroImage =
-    u.presentation === 'gallery' ? photoUrl(u.photos[0].file) : undefined
+  const isGallery = u.presentation === 'gallery'
+  const heroImage = isGallery ? photoUrl(u.photos[0].file) : undefined
   const head = MENU_HEAD[u.presentation]
+  // Photos secondaires (si dispo) pour l'asymétrie et la bande plein-cadre.
+  const photoAt = (n: number) =>
+    isGallery ? photoUrl(u.photos[Math.min(n, u.photos.length - 1)].file) : undefined
 
   return (
     <>
@@ -82,21 +87,39 @@ export function UniversPage() {
         }
       />
 
-      {/* Galerie d'abord : on mène par l'image (food). */}
-      {u.presentation === 'gallery' && (
+      {/* Galerie magazine d'abord : on mène par l'image (food). */}
+      {isGallery && (
         <Section kicker="En images" title="L’univers en photos" tone="cream">
-          <Reveal>
-            <Gallery photos={u.photos.slice(1)} />
-          </Reveal>
+          <MosaicGallery photos={u.photos.slice(1)} />
         </Section>
       )}
 
+      {/* Asymétrie photo / texte (sur-mesure). */}
+      <Section tone="surface">
+        <FeatureRow
+          flip
+          image={photoAt(2)}
+          alt={isGallery ? u.photos[2]?.alt : ''}
+          motifTone="event"
+          motifLabel="Photo à venir"
+          kicker="Sur mesure"
+          title="Composons votre événement"
+          cta={
+            <Link
+              to="/contact"
+              state={{ event: u.name }}
+              className={buttonClasses('accent', 'md')}
+            >
+              {u.ctaLabel} →
+            </Link>
+          }
+        >
+          <p>{u.tagline}</p>
+        </FeatureRow>
+      </Section>
+
       {/* Contenu : suggestions / affiche / placeholder. */}
-      <Section
-        kicker={head.kicker}
-        title={head.title}
-        tone={u.presentation === 'gallery' ? 'surface' : 'cream'}
-      >
+      <Section kicker={head.kicker} title={head.title} tone="cream">
         {u.presentation === 'affiche' ? (
           <Reveal>
             <AfficheMenu
@@ -124,27 +147,24 @@ export function UniversPage() {
         )}
       </Section>
 
-      {/* Closing — bande sombre + CTA. */}
-      <Section tone="dark">
-        <Reveal>
-          <div className="flex flex-col items-center gap-4 text-center">
-            <h2 className="font-heading text-2xl text-on-primary md:text-3xl">
-              Parlons de votre événement
-            </h2>
-            <p className="max-w-prose text-on-primary/80">
-              Chaque prestation est sur mesure — dites-nous tout, on construit votre
-              proposition.
-            </p>
-            <Link
-              to="/contact"
-              state={{ event: u.name }}
-              className={buttonClasses('accent', 'lg')}
-            >
-              {u.ctaLabel} →
-            </Link>
-          </div>
-        </Reveal>
-      </Section>
+      {/* Closing — bande plein-cadre + CTA. */}
+      <Banner
+        image={photoAt(4)}
+        alt={isGallery ? u.photos[4]?.alt : ''}
+        tone={u.tone}
+        kicker="Devis"
+        title="Parlons de votre événement"
+        subtitle="Chaque prestation est sur mesure — dites-nous tout, on construit votre proposition."
+        cta={
+          <Link
+            to="/contact"
+            state={{ event: u.name }}
+            className={buttonClasses('accent', 'lg')}
+          >
+            {u.ctaLabel} →
+          </Link>
+        }
+      />
     </>
   )
 }

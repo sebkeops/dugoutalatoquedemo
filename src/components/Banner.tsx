@@ -5,30 +5,31 @@ import { Container } from './Container'
 type Tone = 'brand' | 'event'
 
 /**
- * Section héros pleine bande — photos en grand, titre généreux.
- * Mobile-first : colonne étroite à 375px, élargie à partir de md.
+ * Bande plein-cadre (edge-to-edge) : photo de fond + texte en surimpression
+ * avec le dégradé de lisibilité de marque. Hauteur maîtrisée (ne pousse pas
+ * tout hors écran en mobile). Sans `image`, un motif discret évite le vide.
  *
- * Identité à deux couches : `brand` (brun) / `event` (terracotta).
- * `image` pose une photo de fond (léger ken-burns) ; deux calques en dégradé
- * (couleur de marque, plus denses à gauche/bas) garantissent la lisibilité.
- * Sans `image`, un motif discret (tache de café + botanique) évite le demi-hero vide.
+ * Se place directement dans la page (hors <Section>), entre deux sections,
+ * pour casser la colonne et créer un moment fort.
  */
-export function Hero({
-  eyebrow,
+export function Banner({
+  image,
+  alt = '',
+  imagePosition,
+  kicker,
   title,
   subtitle,
-  actions,
-  image,
-  imagePosition,
-  tone = 'brand',
+  cta,
+  tone = 'event',
   className = '',
 }: {
-  eyebrow?: ReactNode
+  image?: string
+  alt?: string
+  imagePosition?: string
+  kicker?: ReactNode
   title: ReactNode
   subtitle?: ReactNode
-  actions?: ReactNode
-  image?: string
-  imagePosition?: string
+  cta?: ReactNode
   tone?: Tone
   className?: string
 }) {
@@ -41,21 +42,21 @@ export function Hero({
     tone === 'event'
       ? 'bg-gradient-to-t from-accent-strong/55 to-transparent'
       : 'bg-gradient-to-t from-primary-dark/55 to-transparent'
-
   const imgStyle: CSSProperties | undefined = imagePosition
     ? { objectPosition: imagePosition }
     : undefined
 
   return (
     <section
-      className={`relative overflow-hidden text-on-primary ${solid} ${className}`}
+      className={`relative flex min-h-[320px] items-center overflow-hidden text-on-primary md:min-h-[440px] ${solid} ${className}`}
     >
       {image ? (
         <>
           <img
             src={image}
-            alt=""
-            aria-hidden="true"
+            alt={alt}
+            loading="lazy"
+            sizes="100vw"
             style={imgStyle}
             className="absolute inset-0 h-full w-full animate-kenburns object-cover motion-reduce:animate-none"
           />
@@ -66,20 +67,20 @@ export function Hero({
         <BrandMotif className="pointer-events-none absolute -right-6 -top-8 h-64 w-64 text-cream/10 md:h-80 md:w-80" />
       )}
 
-      <Container width="wide" className="relative py-16 md:py-24">
-        <div className="max-w-2xl space-y-4">
-          {eyebrow && (
+      <Container width="wide" className="relative py-12 md:py-16">
+        <div className="max-w-2xl space-y-3">
+          {kicker && (
             <p className="text-xs font-semibold uppercase tracking-label text-on-primary/85">
-              {eyebrow}
+              {kicker}
             </p>
           )}
-          <h1 className="font-heading text-4xl text-on-primary md:text-display-lg">
+          <h2 className="font-heading text-3xl text-on-primary md:text-display">
             {title}
-          </h1>
+          </h2>
           {subtitle && (
-            <p className="text-base text-on-primary/90 md:text-lg">{subtitle}</p>
+            <p className="max-w-prose text-on-primary/90 md:text-lg">{subtitle}</p>
           )}
-          {actions && <div className="flex flex-wrap gap-3 pt-2">{actions}</div>}
+          {cta && <div className="flex flex-wrap gap-3 pt-1">{cta}</div>}
         </div>
       </Container>
     </section>
