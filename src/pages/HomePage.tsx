@@ -198,6 +198,11 @@ export function HomePage() {
             {REVIEWS.count} avis Google
           </p>
         </Reveal>
+        {/*
+         * Note agrégée réelle (fiche Google). Les cartes ci-dessous sont des exemples
+         * REFORMULÉS, pas des verbatims — à brancher en production sur l'API Google
+         * Places pour afficher les avis authentiques. Voir REVIEWS dans data/site.ts.
+         */}
         <div className="mt-5 grid gap-4 sm:grid-cols-2">
           {REVIEWS.samples.map((r, i) => (
             <Reveal key={r.author} delay={i * 70} className="h-full">
@@ -210,10 +215,6 @@ export function HomePage() {
             </Reveal>
           ))}
         </div>
-        <p className="mt-5 text-xs italic text-on-primary/60">
-          Exemples représentatifs (reformulés) — à remplacer en production par les avis
-          Google en direct.
-        </p>
       </Section>
 
       {/* Coordonnées & horaires. */}

@@ -76,6 +76,7 @@ export const UNIVERS: Univers[] = [
       'Menus hors boissons et location de vaisselle. Service, pain, eau et café inclus. Aucun droit de bouchon.',
     ctaLabel: 'Construisons votre menu',
     hasRealPhotos: true,
+    published: true,
     presentation: 'gallery',
     tone: 'brand',
     minTier: 1,
@@ -150,6 +151,8 @@ export const UNIVERS: Univers[] = [
     // Photos d'ambiance entreprise encore manquantes : on présente le buffet
     // réel sous forme d'affiche menu terracotta (voir AfficheMenu / page univers).
     hasRealPhotos: false,
+    // Publié malgré l'absence de photos : le contenu du buffet, lui, est réel.
+    published: true,
     presentation: 'affiche',
     tone: 'event',
     minTier: 1,
@@ -168,6 +171,9 @@ export const UNIVERS: Univers[] = [
     ],
     ctaLabel: 'Demander un devis',
     hasRealPhotos: false,
+    // MASQUÉ : ni contenu ni photos fournis. Repasser à `true` une fois les deux
+    // reçus (l'accroche et les groupes ci-dessus sont encore des PLACEHOLDER_).
+    published: false,
     presentation: 'placeholder',
     tone: 'brand',
     minTier: 1,
@@ -186,6 +192,9 @@ export const UNIVERS: Univers[] = [
     ],
     ctaLabel: 'Demander un devis',
     hasRealPhotos: false,
+    // MASQUÉ : ni contenu ni photos fournis. Repasser à `true` une fois les deux
+    // reçus (l'accroche et les groupes ci-dessus sont encore des PLACEHOLDER_).
+    published: false,
     presentation: 'placeholder',
     tone: 'brand',
     minTier: 1,
@@ -193,6 +202,19 @@ export const UNIVERS: Univers[] = [
   },
 ]
 
+/**
+ * Univers visibles du site public (vitrine, /traiteur, pages univers).
+ * Le back-office continue d'utiliser `UNIVERS` : il doit lister les univers en
+ * préparation, c'est justement ce que le client gérera lui-même.
+ */
+export const PUBLISHED_UNIVERS: Univers[] = UNIVERS.filter((u) => u.published)
+
+/** Recherche parmi TOUS les univers (publiés ou non) — usage back-office. */
 export function universBySlug(slug: string): Univers | undefined {
   return UNIVERS.find((u) => u.slug === slug)
+}
+
+/** Recherche restreinte aux univers publiés — usage site public. */
+export function publishedUniversBySlug(slug: string): Univers | undefined {
+  return PUBLISHED_UNIVERS.find((u) => u.slug === slug)
 }

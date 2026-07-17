@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Badge, Hero, Photo, Reveal, Section } from '../components'
-import { photoUrl, UNIVERS } from '../data'
+import { photoUrl, PUBLISHED_UNIVERS } from '../data'
 
 /** Index des univers traiteur — cartes cliquables (mobile-first). */
 export function TraiteurPage() {
@@ -16,7 +16,7 @@ export function TraiteurPage() {
 
       <Section kicker="Nos univers" title="Pour chaque occasion" tone="cream">
         <div className="grid gap-5 sm:grid-cols-2">
-          {UNIVERS.map((u, i) => (
+          {PUBLISHED_UNIVERS.map((u, i) => (
             <Reveal key={u.slug} delay={i * 70} className="h-full">
               <Link
                 to={`/traiteur/${u.slug}`}

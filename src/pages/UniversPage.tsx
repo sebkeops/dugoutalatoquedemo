@@ -11,7 +11,7 @@ import {
   Reveal,
   Section,
 } from '../components'
-import { universBySlug, photoUrl, type MenuGroup } from '../data'
+import { publishedUniversBySlug, photoUrl, type MenuGroup } from '../data'
 
 function MenuGroups({ groups }: { groups: MenuGroup[] }) {
   return (
@@ -42,13 +42,16 @@ function MenuGroups({ groups }: { groups: MenuGroup[] }) {
 const MENU_HEAD: Record<string, { kicker: string; title: string }> = {
   gallery: { kicker: 'À la carte', title: 'Quelques suggestions' },
   affiche: { kicker: 'Exemple', title: 'Un buffet type' },
-  placeholder: { kicker: 'Bientôt', title: 'Contenu à venir' },
 }
 
-/** Page d'un univers traiteur, pilotée par le slug de l'URL. */
+/**
+ * Page d'un univers traiteur, pilotée par le slug de l'URL.
+ * Seuls les univers publiés sont accessibles : un univers en préparation
+ * (`published: false`) tombe sur le même écran « introuvable » qu'un slug inconnu.
+ */
 export function UniversPage() {
   const { slug } = useParams()
-  const u = slug ? universBySlug(slug) : undefined
+  const u = slug ? publishedUniversBySlug(slug) : undefined
 
   if (!u) {
     return (
@@ -118,34 +121,27 @@ export function UniversPage() {
         </FeatureRow>
       </Section>
 
-      {/* Contenu : suggestions / affiche / placeholder. */}
-      <Section kicker={head.kicker} title={head.title} tone="cream">
-        {u.presentation === 'affiche' ? (
-          <Reveal>
-            <AfficheMenu
-              eyebrow="Buffet — exemple"
-              title={u.name}
-              date="Exemple de réception"
-              groups={u.groups}
-            />
-          </Reveal>
-        ) : u.presentation === 'placeholder' ? (
-          <Reveal>
-            <Card accent>
-              <p className="text-ink/80">
-                <strong>PLACEHOLDER</strong> — contenu et photos de cet univers à fournir
-                par le client. La structure est prête à les accueillir.
-              </p>
-            </Card>
-          </Reveal>
-        ) : (
-          <MenuGroups groups={u.groups} />
-        )}
+      {/* Contenu : suggestions (galerie) ou affiche menu. */}
+      {head && (
+        <Section kicker={head.kicker} title={head.title} tone="cream">
+          {u.presentation === 'affiche' ? (
+            <Reveal>
+              <AfficheMenu
+                eyebrow="Buffet — exemple"
+                title={u.name}
+                date="Exemple de réception"
+                groups={u.groups}
+              />
+            </Reveal>
+          ) : (
+            <MenuGroups groups={u.groups} />
+          )}
 
-        {u.footnote && (
-          <p className="mt-6 text-center text-xs italic text-secondary">{u.footnote}</p>
-        )}
-      </Section>
+          {u.footnote && (
+            <p className="mt-6 text-center text-xs italic text-secondary">{u.footnote}</p>
+          )}
+        </Section>
+      )}
 
       {/* Closing — bande plein-cadre + CTA. */}
       <Banner

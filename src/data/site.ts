@@ -11,7 +11,7 @@ export const SITE = {
   address: '78 Av. de Gascogne, 31490 Léguevin',
   phone: '09 83 62 60 01',
   phoneHref: 'tel:+33983626001',
-  email: 'PLACEHOLDER_EMAIL@dugoutalatoque.fr',
+  email: 'dugoutalatoque@orange.fr',
   restaurant: {
     label: 'Restaurant — service du midi',
     hours: 'Du lundi au vendredi, 12h – 14h',

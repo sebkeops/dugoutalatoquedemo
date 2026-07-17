@@ -10,14 +10,106 @@ const COLS: Tier[] = [1, 2, 3]
 /** Cellule d'inclusion accessible (✓ inclus / — non inclus). */
 function Mark({ included }: { included: boolean }) {
   return included ? (
-    <span className="font-semibold text-accent-strong" aria-hidden="true">
-      ✓
+    <span className="font-semibold text-accent-strong">
+      <span aria-hidden="true">✓</span>
       <span className="sr-only">Inclus</span>
     </span>
   ) : (
-    <span className="text-secondary/50" aria-hidden="true">
-      —<span className="sr-only">Non inclus</span>
+    <span className="text-secondary/50">
+      <span aria-hidden="true">—</span>
+      <span className="sr-only">Non inclus</span>
     </span>
+  )
+}
+
+/**
+ * Carte d'une formule — rendu mobile du comparatif.
+ * Le tableau à 4 colonnes ne tient pas sous 375px (la colonne F3 sortait de
+ * l'écran) : sous `sm`, chaque formule devient une carte autonome qui liste
+ * l'intégralité des lignes, incluses (✓) comme non incluses (—), pour que la
+ * comparaison reste possible en faisant défiler.
+ */
+function FormuleCard({
+  tier,
+  current,
+  onPreview,
+}: {
+  tier: Tier
+  current: Tier
+  onPreview: (t: Tier) => void
+}) {
+  const info = TIERS[tier]
+
+  return (
+    <div
+      className={[
+        'rounded-card border bg-surface p-5 shadow-card',
+        info.recommended ? 'border-accent-strong' : 'border-secondary/35',
+        tier === current ? 'ring-2 ring-inset ring-primary/50' : '',
+      ].join(' ')}
+    >
+      <div className="flex flex-wrap items-center gap-2">
+        <h2 className="font-heading text-xl text-primary-dark">
+          {info.code} · {info.name}
+        </h2>
+        {info.recommended && (
+          <span className="rounded-pill bg-accent-strong px-2 py-0.5 text-[10px] font-semibold uppercase tracking-label text-on-accent">
+            Recommandée
+          </span>
+        )}
+        {tier === current && (
+          <span className="text-[10px] font-medium uppercase tracking-label text-primary">
+            Présentée
+          </span>
+        )}
+      </div>
+      <p className="mt-1 text-sm text-ink/80">{FORMULE_AUTONOMIE[tier]}</p>
+
+      <div className="mt-4 space-y-4">
+        {FORMULE_CATEGORIES.map((cat) => (
+          <div key={cat.title}>
+            <h3 className="text-xs font-semibold uppercase tracking-label text-secondary">
+              {cat.title}
+            </h3>
+            <ul className="mt-2 space-y-1.5">
+              {cat.features.map((f) => {
+                const included = isUnlocked(f.minTier, tier)
+                return (
+                  <li
+                    key={f.label}
+                    className={`flex gap-2 text-sm ${
+                      included ? 'text-ink/90' : 'text-secondary/70'
+                    }`}
+                  >
+                    <span className="w-4 shrink-0 text-center">
+                      <Mark included={included} />
+                    </span>
+                    <span>{f.label}</span>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
+
+      <div className="mt-5 flex flex-col gap-2">
+        <Link
+          to="/contact"
+          state={{ event: `Formule ${info.code} — ${info.name}` }}
+          className={buttonClasses(info.recommended ? 'accent' : 'primary', 'md')}
+        >
+          Demander cette formule
+        </Link>
+        <button
+          type="button"
+          onClick={() => onPreview(tier)}
+          className="text-xs font-medium text-secondary hover:text-primary-dark"
+        >
+          Prévisualiser {info.code} dans la démo
+        </button>
+      </div>
+    </div>
   )
 }
 
@@ -41,83 +133,93 @@ export function FormulesPage() {
       />
 
       <Container width="wide" className="space-y-10 py-12 md:py-16">
-        <Reveal>
+        {/* Mobile — une carte par formule (le tableau ne tient pas sous 375px). */}
+        <div className="space-y-4 sm:hidden">
+          {COLS.map((t, i) => (
+            <Reveal key={t} delay={i * 70}>
+              <FormuleCard tier={t} current={current} onPreview={setTier} />
+            </Reveal>
+          ))}
+        </div>
+
+        {/* À partir de sm — le comparatif tabulaire complet. */}
+        <Reveal className="hidden sm:block">
           <div className="overflow-hidden rounded-card border border-secondary/35 shadow-card">
-          <table className="w-full border-collapse text-sm">
-            <thead>
-              <tr className="bg-surface">
-                <th className="p-3 text-left align-bottom font-heading text-base text-primary-dark">
-                  Fonctionnalités
-                </th>
-                {COLS.map((t) => (
-                  <th
-                    key={t}
-                    className={`w-12 p-2 text-center align-bottom sm:w-28 sm:p-3 ${colClass(t)}`}
-                  >
-                    <div className="font-heading text-lg text-primary-dark">
-                      {TIERS[t].code}
-                    </div>
-                    <div className="hidden text-xs font-medium text-ink/80 sm:block">
-                      {TIERS[t].name}
-                    </div>
-                    {TIERS[t].recommended && (
-                      <div className="mt-1 inline-block rounded-pill bg-accent-strong px-2 py-0.5 text-[10px] font-semibold uppercase tracking-label text-on-accent">
-                        Recommandée
-                      </div>
-                    )}
-                    {t === current && (
-                      <div className="mt-1 text-[10px] font-medium uppercase tracking-label text-primary">
-                        Présentée
-                      </div>
-                    )}
+            <table className="w-full border-collapse text-sm">
+              <thead>
+                <tr className="bg-surface">
+                  <th className="p-3 text-left align-bottom font-heading text-base text-primary-dark">
+                    Fonctionnalités
                   </th>
-                ))}
-              </tr>
-            </thead>
-
-            <tbody>
-              {FORMULE_CATEGORIES.map((cat) => (
-                <Fragment key={cat.title}>
-                  <tr>
+                  {COLS.map((t) => (
                     <th
-                      colSpan={4}
-                      className="border-t border-secondary/30 bg-cream p-2 px-3 text-left text-xs font-semibold uppercase tracking-label text-secondary"
+                      key={t}
+                      className={`w-28 p-3 text-center align-bottom ${colClass(t)}`}
                     >
-                      {cat.title}
+                      <div className="font-heading text-lg text-primary-dark">
+                        {TIERS[t].code}
+                      </div>
+                      <div className="text-xs font-medium text-ink/80">{TIERS[t].name}</div>
+                      {TIERS[t].recommended && (
+                        <div className="mt-1 inline-block rounded-pill bg-accent-strong px-2 py-0.5 text-[10px] font-semibold uppercase tracking-label text-on-accent">
+                          Recommandée
+                        </div>
+                      )}
+                      {t === current && (
+                        <div className="mt-1 text-[10px] font-medium uppercase tracking-label text-primary">
+                          Présentée
+                        </div>
+                      )}
                     </th>
-                  </tr>
-                  {cat.features.map((f) => (
-                    <tr key={f.label} className="border-t border-secondary/15">
-                      <td className="p-3 text-ink/90">{f.label}</td>
-                      {COLS.map((t) => (
-                        <td key={t} className={`p-3 text-center ${colClass(t)}`}>
-                          <Mark included={isUnlocked(f.minTier, t)} />
-                        </td>
-                      ))}
-                    </tr>
                   ))}
-                </Fragment>
-              ))}
+                </tr>
+              </thead>
 
-              {/* Synthèse autonomie */}
-              <tr className="border-t border-secondary/30">
-                <td className="p-3 font-medium text-primary-dark">Autonomie au quotidien</td>
-                {COLS.map((t) => (
-                  <td
-                    key={t}
-                    className={`p-3 text-center text-xs text-ink/80 ${colClass(t)}`}
-                  >
-                    {FORMULE_AUTONOMIE[t]}
-                  </td>
+              <tbody>
+                {FORMULE_CATEGORIES.map((cat) => (
+                  <Fragment key={cat.title}>
+                    <tr>
+                      <th
+                        colSpan={4}
+                        className="border-t border-secondary/30 bg-cream p-2 px-3 text-left text-xs font-semibold uppercase tracking-label text-secondary"
+                      >
+                        {cat.title}
+                      </th>
+                    </tr>
+                    {cat.features.map((f) => (
+                      <tr key={f.label} className="border-t border-secondary/15">
+                        <td className="p-3 text-ink/90">{f.label}</td>
+                        {COLS.map((t) => (
+                          <td key={t} className={`p-3 text-center ${colClass(t)}`}>
+                            <Mark included={isUnlocked(f.minTier, t)} />
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </Fragment>
                 ))}
-              </tr>
-            </tbody>
-          </table>
+
+                {/* Synthèse autonomie */}
+                <tr className="border-t border-secondary/30">
+                  <td className="p-3 font-medium text-primary-dark">
+                    Autonomie au quotidien
+                  </td>
+                  {COLS.map((t) => (
+                    <td
+                      key={t}
+                      className={`p-3 text-center text-xs text-ink/80 ${colClass(t)}`}
+                    >
+                      {FORMULE_AUTONOMIE[t]}
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
           </div>
         </Reveal>
 
-        {/* CTA par formule */}
-        <div className="grid gap-4 sm:grid-cols-3">
+        {/* CTA par formule — déjà portés par les cartes en mobile. */}
+        <div className="hidden gap-4 sm:grid sm:grid-cols-3">
           {COLS.map((t, i) => {
             const info = TIERS[t]
             return (
@@ -128,33 +230,33 @@ export function FormulesPage() {
                     info.recommended ? 'border-accent-strong' : 'border-secondary/35',
                   ].join(' ')}
                 >
-                <div className="flex items-center justify-between gap-2">
-                  <h2 className="font-heading text-lg text-primary-dark">
-                    {info.code} · {info.name}
-                  </h2>
-                  {info.recommended && (
-                    <span className="rounded-pill bg-accent-strong px-2 py-0.5 text-[10px] font-semibold uppercase tracking-label text-on-accent">
-                      Conseillée
-                    </span>
-                  )}
-                </div>
-                <p className="mt-1 flex-1 text-sm text-ink/80">{FORMULE_AUTONOMIE[t]}</p>
-                <div className="mt-4 flex flex-col gap-2">
-                  <Link
-                    to="/contact"
-                    state={{ event: `Formule ${info.code} — ${info.name}` }}
-                    className={buttonClasses(info.recommended ? 'accent' : 'primary', 'md')}
-                  >
-                    Demander cette formule
-                  </Link>
-                  <button
-                    type="button"
-                    onClick={() => setTier(t)}
-                    className="text-xs font-medium text-secondary hover:text-primary-dark"
-                  >
-                    Prévisualiser {info.code} dans la démo
-                  </button>
-                </div>
+                  <div className="flex items-center justify-between gap-2">
+                    <h2 className="font-heading text-lg text-primary-dark">
+                      {info.code} · {info.name}
+                    </h2>
+                    {info.recommended && (
+                      <span className="rounded-pill bg-accent-strong px-2 py-0.5 text-[10px] font-semibold uppercase tracking-label text-on-accent">
+                        Conseillée
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-1 flex-1 text-sm text-ink/80">{FORMULE_AUTONOMIE[t]}</p>
+                  <div className="mt-4 flex flex-col gap-2">
+                    <Link
+                      to="/contact"
+                      state={{ event: `Formule ${info.code} — ${info.name}` }}
+                      className={buttonClasses(info.recommended ? 'accent' : 'primary', 'md')}
+                    >
+                      Demander cette formule
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => setTier(t)}
+                      className="text-xs font-medium text-secondary hover:text-primary-dark"
+                    >
+                      Prévisualiser {info.code} dans la démo
+                    </button>
+                  </div>
                 </div>
               </Reveal>
             )

@@ -35,6 +35,13 @@ export interface Univers {
   /** `false` => univers en attente de vraies photos (placeholder). */
   hasRealPhotos: boolean
   /**
+   * `false` => univers masqué du site public : absent de /traiteur et accès direct
+   * renvoyé en 404. Tant que le client n'a pas fourni contenu et photos, mieux vaut
+   * ne pas l'exposer. Les données restent en place : repasser à `true` suffit à le
+   * publier. Le back-office (gestion de contenu, modération) continue de les lister.
+   */
+  published: boolean
+  /**
    * Mode de présentation du visuel principal :
    *  - `gallery`     : galerie de vraies photos
    *  - `affiche`     : affiche menu terracotta (contenu réel, photos à venir)
