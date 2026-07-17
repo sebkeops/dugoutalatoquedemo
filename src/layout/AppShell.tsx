@@ -46,14 +46,24 @@ function navLinkClass({ isActive }: { isActive: boolean }) {
   ].join(' ')
 }
 
-/** Logo réel : pastille ronde (masque le fond crème carré du JPG) + nom. */
+/**
+ * Logo réel : pastille ronde (masque le fond crème carré du JPG) + nom.
+ * Sous lg, la pastille est nettement agrandie et centrée dans le header : c'est
+ * l'identité de la marque, et à 40px le monogramme devenait illisible. Elle
+ * reprend sa taille compacte sur lg+, où la nav en ligne occupe la droite.
+ * Source 512×512 : nette jusqu'à 64px même en DPR 3.
+ */
 function LogoSlot() {
   return (
-    <NavLink to="/" className="flex items-center gap-2.5" aria-label={`${SITE.name} — accueil`}>
+    <NavLink
+      to="/"
+      className="flex items-center justify-center gap-2.5 lg:justify-start"
+      aria-label={`${SITE.name} — accueil`}
+    >
       <img
         src={logoUrl}
         alt={SITE.name}
-        className="h-10 w-10 rounded-full object-cover ring-1 ring-secondary/30"
+        className="h-14 w-14 rounded-full object-cover ring-1 ring-secondary/30 lg:h-10 lg:w-10"
       />
       <span className="hidden whitespace-nowrap font-heading text-lg leading-tight text-primary-dark sm:inline">
         {SITE.name}
@@ -145,7 +155,18 @@ export function AppShell({ children }: { children?: ReactNode }) {
       <div className="flex min-h-screen flex-col bg-cream">
         <DemoIntro />
         <header className="sticky top-0 z-30 border-b border-secondary/40 bg-surface/95 backdrop-blur">
-          <Container width="wide" className="flex items-center justify-between gap-3 py-3">
+          {/*
+           * Sous lg : grille 3 colonnes [cale | logo | menu]. Les deux colonnes
+           * extrêmes font exactement la largeur du bouton menu (2.5rem = h-10/w-10),
+           * si bien que le logo tombe optiquement au centre et non décalé de la
+           * moitié du hamburger. Sur lg+, on repasse au flex logo-à-gauche /
+           * nav-à-droite : le header desktop est inchangé.
+           */}
+          <Container
+            width="wide"
+            className="grid grid-cols-[2.5rem_1fr_2.5rem] items-center gap-2 py-2.5 lg:flex lg:justify-between lg:gap-3 lg:py-3"
+          >
+            <div aria-hidden="true" className="lg:hidden" />
             <LogoSlot />
             <NavBar />
           </Container>
