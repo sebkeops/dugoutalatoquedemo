@@ -60,11 +60,16 @@ export function HomePage() {
       />
 
       {/* Le restaurant — asymétrie, image à gauche.
-          Pas d'`image` : la seule photo de restaurant disponible est déjà le fond
-          du héros, juste au-dessus — la resservir ici ferait doublon. Motif de
-          marque en attendant les photos du midi (plats / ambiance). */}
+          Reprend volontairement la photo du héros : c'est la seule vraie photo de
+          restaurant disponible, et sur la section qui présente le restaurant elle
+          vaut mieux qu'un motif décoratif. Le héros la sert en fond plein-cadre,
+          ici elle est cadrée dans une carte : la répétition passe inaperçue.
+          À remplacer dès que les photos du midi (plats / ambiance) arriveront. */}
       <Section tone="cream">
         <FeatureRow
+          image={heroUrl}
+          alt="Salle du restaurant Du Goût à la Toque"
+          eager
           kicker="Le midi"
           title="Le restaurant"
           cta={
