@@ -29,10 +29,15 @@ export function BrandMotif({ className = '' }: { className?: string }) {
  * Panneau éditorial de remplacement quand une photo n'est pas encore fournie :
  * fond de marque (brun ou terracotta) + motif. Jamais un grand vide.
  * Remplir plus tard = passer une vraie `image` au composant parent.
+ *
+ * Sans `label`, le panneau est purement décoratif — c'est le cas par défaut sur
+ * le site public : annoncer « photo à venir » au visiteur, c'est lui parler d'un
+ * chantier qui ne le regarde pas. Le `label` reste utile pour les écrans
+ * internes (styleguide, back-office).
  */
 export function MotifPanel({
   tone = 'brand',
-  label = 'Visuel à venir',
+  label,
   className = '',
 }: {
   tone?: 'brand' | 'event'
@@ -46,13 +51,14 @@ export function MotifPanel({
   return (
     <div
       className={`relative flex h-full w-full items-end overflow-hidden ${bg} ${className}`}
-      role="img"
-      aria-label={label}
+      {...(label ? { role: 'img', 'aria-label': label } : { 'aria-hidden': true })}
     >
       <BrandMotif className="pointer-events-none absolute -right-6 -top-8 h-56 w-56 text-cream/15" />
-      <span className="relative m-4 text-xs font-medium uppercase tracking-label text-cream/70">
-        {label}
-      </span>
+      {label && (
+        <span className="relative m-4 text-xs font-medium uppercase tracking-label text-cream/70">
+          {label}
+        </span>
+      )}
     </div>
   )
 }

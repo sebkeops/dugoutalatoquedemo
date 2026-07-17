@@ -53,7 +53,7 @@ export function FeatureRow({
                 className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
             ) : (
-              <MotifPanel tone={motifTone} label={motifLabel ?? 'Photo à venir'} />
+              <MotifPanel tone={motifTone} label={motifLabel} />
             )}
           </div>
         </div>

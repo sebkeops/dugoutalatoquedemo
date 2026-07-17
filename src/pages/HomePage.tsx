@@ -59,12 +59,12 @@ export function HomePage() {
         }
       />
 
-      {/* Le restaurant — asymétrie, image à gauche. */}
+      {/* Le restaurant — asymétrie, image à gauche.
+          Pas d'`image` : la seule photo de restaurant disponible est déjà le fond
+          du héros, juste au-dessus — la resservir ici ferait doublon. Motif de
+          marque en attendant les photos du midi (plats / ambiance). */}
       <Section tone="cream">
         <FeatureRow
-          image={heroUrl}
-          alt="Salle du restaurant Du Goût à la Toque"
-          eager
           kicker="Le midi"
           title="Le restaurant"
           cta={
@@ -89,7 +89,8 @@ export function HomePage() {
         title="Pour vos plus belles tables"
         subtitle="Du cocktail au repas assis, une cuisine de fête généreuse et soignée."
         cta={
-          <Link to="/traiteur" className={buttonClasses('accent', 'lg')}>
+          /* Bande terracotta : un bouton accent serait terracotta sur terracotta. */
+          <Link to="/traiteur" className={buttonClasses('outline', 'lg', 'bg-cream/95')}>
             Découvrir le traiteur →
           </Link>
         }

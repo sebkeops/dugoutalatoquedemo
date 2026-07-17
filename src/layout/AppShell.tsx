@@ -24,6 +24,12 @@ function readShareParams(): { demo: boolean; tier: Tier } {
   }
 }
 
+/**
+ * Navigation publique. `/styleguide` en est volontairement absent : c'est un
+ * outil interne (inventaire des composants, champs de démo), pas une page que
+ * le visiteur doit découvrir. La route reste servie par le routeur : on y accède
+ * en tapant l'URL directement.
+ */
 const NAV = [
   { to: '/', label: 'Accueil', end: true },
   { to: '/restaurant', label: 'Restaurant', end: false },
@@ -31,7 +37,6 @@ const NAV = [
   { to: '/a-emporter', label: 'À emporter', end: false },
   { to: '/formules', label: 'Formules', end: false },
   { to: '/gestion', label: 'Gestion', end: false },
-  { to: '/styleguide', label: 'Styleguide', end: false },
 ]
 
 function navLinkClass({ isActive }: { isActive: boolean }) {

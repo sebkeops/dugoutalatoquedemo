@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useLocation, useSearchParams } from 'react-router-dom'
-import { Button, Card, Container, FormField } from '../components'
+import { Button, Card, Container, FormField, Hero } from '../components'
 import { TierBadge, TierGate } from '../tiers'
 import { SITE } from '../data'
 
@@ -85,121 +85,123 @@ export function ContactPage() {
   const canSubmit = form.date.trim() !== '' && form.personnes.trim() !== ''
 
   return (
-    <Container className="space-y-6 py-10">
-      <header className="space-y-2">
+    <>
+      <Hero
+        eyebrow="Contact"
+        tone="brand"
+        title="Demande de devis"
+        subtitle="Parlez-nous de votre événement : nous revenons vers vous avec une proposition sur mesure. Aucun tarif n’est affiché en ligne — chaque devis est personnalisé."
+      />
+
+      <Container className="space-y-6 py-10">
         <div className="flex flex-wrap items-center gap-2">
-          <h1 className="text-3xl">Demande de devis</h1>
           <TierBadge minTier={2} />
         </div>
-        <p className="text-ink/80">
-          Parlez-nous de votre événement : nous revenons vers vous avec une proposition
-          sur mesure. Aucun tarif n’est affiché en ligne — chaque devis est personnalisé.
-        </p>
-      </header>
 
-      <TierGate minTier={2} fallback={<DevisFallback />}>
-        {submitted ? (
-          <Card accent>
-            <h2 className="font-heading text-xl text-primary-dark">Demande reçue !</h2>
-            <p className="mt-1 text-sm text-ink/80">
-              Merci, nous vous recontactons rapidement pour affiner votre devis.
-            </p>
-            <dl className="mt-4 space-y-1.5 text-sm">
-              {(Object.keys(LABELS) as (keyof DevisForm)[])
-                .filter((k) => form[k].trim() !== '')
-                .map((k) => (
-                  <div key={k} className="flex gap-2">
-                    <dt className="font-semibold text-primary-dark">{LABELS[k]} :</dt>
-                    <dd className="text-ink/80">{form[k]}</dd>
-                  </div>
-                ))}
-            </dl>
-            <p className="mt-3 text-xs italic text-secondary">
-              Démonstration — aucune demande n’est réellement envoyée.
-            </p>
-            <Button
-              type="button"
-              variant="outline"
-              className="mt-4"
-              onClick={() => setSubmitted(false)}
-            >
-              Modifier ma demande
-            </Button>
-          </Card>
-        ) : (
-          <Card>
-            <div className="space-y-4">
-              <FormField
-                label={LABELS.event}
-                name="event"
-                placeholder="Mariage, séminaire, anniversaire…"
-                value={form.event}
-                onChange={set('event')}
-              />
-              <div className="grid gap-4 sm:grid-cols-2">
+        <TierGate minTier={2} fallback={<DevisFallback />}>
+          {submitted ? (
+            <Card accent>
+              <h2 className="font-heading text-xl text-primary-dark">Demande reçue !</h2>
+              <p className="mt-1 text-sm text-ink/80">
+                Merci, nous vous recontactons rapidement pour affiner votre devis.
+              </p>
+              <dl className="mt-4 space-y-1.5 text-sm">
+                {(Object.keys(LABELS) as (keyof DevisForm)[])
+                  .filter((k) => form[k].trim() !== '')
+                  .map((k) => (
+                    <div key={k} className="flex gap-2">
+                      <dt className="font-semibold text-primary-dark">{LABELS[k]} :</dt>
+                      <dd className="text-ink/80">{form[k]}</dd>
+                    </div>
+                  ))}
+              </dl>
+              <p className="mt-3 text-xs italic text-secondary">
+                Démonstration — aucune demande n’est réellement envoyée.
+              </p>
+              <Button
+                type="button"
+                variant="outline"
+                className="mt-4"
+                onClick={() => setSubmitted(false)}
+              >
+                Modifier ma demande
+              </Button>
+            </Card>
+          ) : (
+            <Card>
+              <div className="space-y-4">
                 <FormField
-                  label={LABELS.date}
-                  type="date"
-                  name="date"
-                  required
-                  value={form.date}
-                  onChange={set('date')}
+                  label={LABELS.event}
+                  name="event"
+                  placeholder="Mariage, séminaire, anniversaire…"
+                  value={form.event}
+                  onChange={set('event')}
+                />
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <FormField
+                    label={LABELS.date}
+                    type="date"
+                    name="date"
+                    required
+                    value={form.date}
+                    onChange={set('date')}
+                  />
+                  <FormField
+                    label={LABELS.personnes}
+                    type="number"
+                    name="personnes"
+                    required
+                    placeholder="Ex. 80"
+                    value={form.personnes}
+                    onChange={set('personnes')}
+                  />
+                </div>
+                <FormField
+                  label={LABELS.budget}
+                  name="budget"
+                  placeholder="Ex. à définir ensemble"
+                  hint="Optionnel — pour calibrer notre proposition."
+                  value={form.budget}
+                  onChange={set('budget')}
                 />
                 <FormField
-                  label={LABELS.personnes}
-                  type="number"
-                  name="personnes"
-                  required
-                  placeholder="Ex. 80"
-                  value={form.personnes}
-                  onChange={set('personnes')}
+                  label={LABELS.commentaire}
+                  multiline
+                  name="commentaire"
+                  placeholder="Lieu, envies, contraintes, formule souhaitée…"
+                  value={form.commentaire}
+                  onChange={set('commentaire')}
                 />
+                <div className="flex items-center gap-3">
+                  <Button
+                    type="button"
+                    variant="accent"
+                    disabled={!canSubmit}
+                    onClick={() => setSubmitted(true)}
+                  >
+                    Envoyer ma demande
+                  </Button>
+                  <span className="text-xs text-secondary">Date et nombre de personnes requis.</span>
+                </div>
               </div>
-              <FormField
-                label={LABELS.budget}
-                name="budget"
-                placeholder="Ex. à définir ensemble"
-                hint="Optionnel — pour calibrer notre proposition."
-                value={form.budget}
-                onChange={set('budget')}
-              />
-              <FormField
-                label={LABELS.commentaire}
-                multiline
-                name="commentaire"
-                placeholder="Lieu, envies, contraintes, formule souhaitée…"
-                value={form.commentaire}
-                onChange={set('commentaire')}
-              />
-              <div className="flex items-center gap-3">
-                <Button
-                  type="button"
-                  variant="accent"
-                  disabled={!canSubmit}
-                  onClick={() => setSubmitted(true)}
-                >
-                  Envoyer ma demande
-                </Button>
-                <span className="text-xs text-secondary">Date et nombre de personnes requis.</span>
-              </div>
-            </div>
-          </Card>
-        )}
-      </TierGate>
+            </Card>
+          )}
+        </TierGate>
 
-      {/* Complément — toujours visible, quel que soit le tier. */}
-      <Card>
-        <h2 className="font-heading text-lg text-primary-dark">Préférez-vous nous parler ?</h2>
-        <p className="mt-1 text-sm text-ink/80">
-          Joignez-nous directement, nous serons ravis d’échanger sur votre projet.
-        </p>
-        <div className="mt-3">
-          <ContactInfo />
-        </div>
-        <p className="mt-3 text-xs text-secondary">
-          {SITE.traiteur.label} — {SITE.traiteur.note}
-        </p>
-      </Card>
-    </Container>
+        {/* Complément — toujours visible, quel que soit le tier. */}
+        <Card>
+          <h2 className="font-heading text-lg text-primary-dark">Préférez-vous nous parler ?</h2>
+          <p className="mt-1 text-sm text-ink/80">
+            Joignez-nous directement, nous serons ravis d’échanger sur votre projet.
+          </p>
+          <div className="mt-3">
+            <ContactInfo />
+          </div>
+          <p className="mt-3 text-xs text-secondary">
+            {SITE.traiteur.label} — {SITE.traiteur.note}
+          </p>
+        </Card>
+      </Container>
+    </>
   )
 }

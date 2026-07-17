@@ -67,6 +67,9 @@ export function UniversPage() {
   const isGallery = u.presentation === 'gallery'
   const heroImage = isGallery ? photoUrl(u.photos[0].file) : undefined
   const head = MENU_HEAD[u.presentation]
+  // Sur une surface terracotta (tone « event »), un bouton accent est terracotta
+  // sur terracotta : on passe alors en crème pour garder le contraste.
+  const heroCta = u.tone === 'event' ? buttonClasses('outline', 'lg', 'bg-cream/95') : buttonClasses('accent', 'lg')
   // Photos secondaires (si dispo) pour l'asymétrie et la bande plein-cadre.
   const photoAt = (n: number) =>
     isGallery ? photoUrl(u.photos[Math.min(n, u.photos.length - 1)].file) : undefined
@@ -80,11 +83,7 @@ export function UniversPage() {
         title={u.name}
         subtitle={u.tagline}
         actions={
-          <Link
-            to="/contact"
-            state={{ event: u.name }}
-            className={buttonClasses('accent', 'lg')}
-          >
+          <Link to="/contact" state={{ event: u.name }} className={heroCta}>
             {u.ctaLabel}
           </Link>
         }
@@ -97,14 +96,14 @@ export function UniversPage() {
         </Section>
       )}
 
-      {/* Asymétrie photo / texte (sur-mesure). */}
+      {/* Asymétrie photo / texte (sur-mesure). L'accroche n'est PAS reprise ici :
+          elle est déjà le sous-titre du héros, quelques centaines de pixels plus haut. */}
       <Section tone="surface">
         <FeatureRow
           flip
           image={photoAt(2)}
           alt={isGallery ? u.photos[2]?.alt : ''}
           motifTone="event"
-          motifLabel="Photo à venir"
           kicker="Sur mesure"
           title="Composons votre événement"
           cta={
@@ -117,7 +116,10 @@ export function UniversPage() {
             </Link>
           }
         >
-          <p>{u.tagline}</p>
+          <p>
+            Dites-nous le lieu, la date et le nombre de convives : nous construisons
+            une proposition à votre mesure.
+          </p>
         </FeatureRow>
       </Section>
 
@@ -155,7 +157,7 @@ export function UniversPage() {
           <Link
             to="/contact"
             state={{ event: u.name }}
-            className={buttonClasses('accent', 'lg')}
+            className={buttonClasses('outline', 'lg', 'bg-cream/95')}
           >
             {u.ctaLabel} →
           </Link>

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { Badge, Hero, Photo, Reveal, Section } from '../components'
+import { Badge, BrandMotif, Hero, Photo, Reveal, Section } from '../components'
 import { photoUrl, PUBLISHED_UNIVERS } from '../data'
 
 /** Index des univers traiteur — cartes cliquables (mobile-first). */
@@ -30,8 +30,10 @@ export function TraiteurPage() {
                       className="transition-transform duration-500 group-hover:scale-105"
                     />
                   ) : (
-                    <div className="flex h-full w-full items-center justify-center bg-accent-strong/90 p-4 text-center">
-                      <span className="font-heading text-xl text-cream">{u.name}</span>
+                    /* Pas encore de photo : motif de marque seul — le nom de
+                       l'univers est déjà porté par le titre de la carte. */
+                    <div className="relative h-full w-full overflow-hidden bg-gradient-to-br from-accent-strong to-accent">
+                      <BrandMotif className="pointer-events-none absolute -right-4 -top-6 h-40 w-40 text-cream/15" />
                     </div>
                   )}
                 </div>
